@@ -1,0 +1,44 @@
+name: Release
+
+# Push a tag like v1.0.1 to publish a release. Bump "version" in
+# extension/manifest.json first: Mozilla only signs each version once.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+      # Optional: with AMO API credentials stored as repository secrets, also
+      # produce a Mozilla-signed .xpi that installs permanently in Firefox.
+      - name: Sign with Mozilla (unlisted)
+        env:
+          AMO_API_KEY: ${{ secrets.AMO_API_KEY }}
+          AMO_API_SECRET: ${{ secrets.AMO_API_SECRET }}
+        if: env.AMO_API_KEY != '' && env.AMO_API_SECRET != ''
+        run: >
+          npx web-ext sign --channel unlisted --source-dir extension --artifacts-dir dist
+          --api-key "$AMO_API_KEY" --api-secret "$AMO_API_SECRET"
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --generate-notes
+          fi

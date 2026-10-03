@@ -1,0 +1,10 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Embedding page</title>
+<!-- Top page without a video; the video lives in a cross-origin iframe, like a YouTube embed. -->
+<p>Questions and controls would be here.</p>
+<input id="text" placeholder="type here">
+<iframe id="player" width="520" height="320"></iframe>
+<script>
+  document.getElementById('player').src = new URLSearchParams(location.search).get('frame');
+</script>

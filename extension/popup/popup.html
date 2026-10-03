@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Forced Speeder</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon.svg" alt="" width="20" height="20">
+    <h1>Forced Speeder</h1>
+    <label class="switch" title="Turn forcing on or off">
+      <input type="checkbox" id="enabled">
+      <span></span>
+    </label>
+  </header>
+
+  <main id="controls">
+    <div class="speed-row">
+      <button id="slower" class="round" title="Slower (S)" aria-label="Slower">−</button>
+      <label class="speed-value">
+        <input type="number" id="speed" min="0.25" max="16" step="0.05" aria-label="Speed">
+        <span>×</span>
+      </label>
+      <button id="faster" class="round" title="Faster (D)" aria-label="Faster">+</button>
+    </div>
+
+    <input type="range" id="slider" min="0.25" max="4" step="0.05" aria-label="Speed slider">
+
+    <div class="presets" id="presets"></div>
+
+    <p id="status" class="status"></p>
+  </main>
+
+  <details>
+    <summary>Settings</summary>
+    <label class="check"><input type="checkbox" id="shortcuts"> Keyboard shortcuts on pages with video</label>
+    <p class="hint"><kbd>S</kbd> slower · <kbd>D</kbd> faster · <kbd>R</kbd> toggle 1× / last speed</p>
+    <label class="check"><input type="checkbox" id="overlay"> Show the new speed over the video</label>
+    <label class="check"><input type="checkbox" id="audio"> Also speed up audio-only players</label>
+  </details>
+
+  <script src="../shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

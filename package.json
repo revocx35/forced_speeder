@@ -1,0 +1,17 @@
+{
+  "name": "forced-speeder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Firefox extension: force any playback speed on HTML5 videos, even where the site locks it.",
+  "license": "MIT",
+  "scripts": {
+    "lint": "web-ext lint --source-dir extension",
+    "build": "web-ext build --source-dir extension --artifacts-dir dist --overwrite-dest",
+    "start": "web-ext run --source-dir extension --start-url https://www.youtube.com",
+    "test": "npm run build && node --test --test-concurrency=1 test/e2e.test.mjs"
+  },
+  "devDependencies": {
+    "selenium-webdriver": "^4.35.0",
+    "web-ext": "^8.10.0"
+  }
+}

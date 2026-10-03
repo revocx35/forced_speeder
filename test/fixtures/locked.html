@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Locked video</title>
+<!--
+  Behaves like a site that doesn't allow speed changes: no speed control, and
+  every way it can notice a changed rate it resets it to 1 and counts it.
+-->
+<video src="clip.webm" width="480"></video>
+<script>
+  const v = document.querySelector('video');
+  window.detections = 0;
+  window.seenRates = [];
+
+  function check(source) {
+    const r = v.playbackRate;
+    window.seenRates.push(r);
+    if (r !== 1) {
+      window.detections++;
+      console.log('locked.html: rate', r, 'detected via', source);
+      v.playbackRate = 1;
+      v.defaultPlaybackRate = 1;
+    }
+  }
+
+  v.addEventListener('ratechange', () => check('ratechange'));
+  v.onratechange = () => check('onratechange');
+  setInterval(() => check('poll'), 50);
+  // Blind reset, like a player re-applying its own speed setting.
+  setInterval(() => { v.playbackRate = 1; }, 120);
+</script>

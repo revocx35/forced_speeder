@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Shadow DOM video</title>
+<div id="host"></div>
+<script>
+  // Video inside a closed shadow root: its events never reach the window.
+  const root = document.getElementById('host').attachShadow({ mode: 'closed' });
+  const v = document.createElement('video');
+  v.src = 'clip.webm';
+  v.width = 480;
+  root.append(v);
+  window.player = v;
+</script>
