@@ -200,6 +200,7 @@
     } catch (_) {
       return;
     }
+    if (!next || typeof next !== 'object') return;
     const speed = +next.speed;
     if (!isFinite(speed) || speed <= 0) return;
     const wasActive = config.active;

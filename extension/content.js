@@ -73,6 +73,7 @@
   window.addEventListener('keydown', (e) => {
     if (!settings || !settings.enabled || !settings.shortcuts || !tabHasMedia) return;
     if (e.ctrlKey || e.altKey || e.metaKey || e.isComposing || isTyping(e)) return;
+    if (typeof e.key !== 'string') return; // e.g. synthetic autofill events
     const key = e.key.toLowerCase();
     let next;
     if (key === 'd') next = FS.step(settings.speed, +1);
